@@ -71,6 +71,26 @@ npm test
 
 3. Open [http://127.0.0.1:8512/test/visual-tests/index.html](http://127.0.0.1:8512/test/visual-tests/index.html) in your browser.
 
+### Auto Build & Test 
+1.Install Express.  
+
+ ```bash
+    npm install express
+ ```  
+        
+2.Auto Build and Open Webbrower 
+>Mac  
+
+ ```bash
+    ./buildTest.sh  
+ ```  
+>Windows  
+
+ ```cmd
+    buildTest.bat
+ ```  
+       
+
 ## Links
 
 * [Official site](http://cocos2d-x.org/creator)
