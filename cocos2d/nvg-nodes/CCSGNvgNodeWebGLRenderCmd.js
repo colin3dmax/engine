@@ -3,15 +3,15 @@
  http://www.cross2d.com
  ****************************************************************************/
 
-cc.NvgNode.WebGLRenderCmd = function (renderableObject) {
+_ccsg.NvgNode.WebGLRenderCmd = function (renderableObject) {
     _ccsg.Node.WebGLRenderCmd.call(this, renderableObject);
     this._needDraw = true;
 };
 
-cc.NvgNode.WebGLRenderCmd.prototype = Object.create(_ccsg.Node.WebGLRenderCmd.prototype);
-cc.NvgNode.WebGLRenderCmd.prototype.constructor = cc.NvgNode.WebGLRenderCmd;
+_ccsg.NvgNode.WebGLRenderCmd.prototype = Object.create(_ccsg.Node.WebGLRenderCmd.prototype);
+_ccsg.NvgNode.WebGLRenderCmd.prototype.constructor = _ccsg.NvgNode.WebGLRenderCmd;
 
-cc.NvgNode.WebGLRenderCmd.prototype.rendering = function (ctx) {
+_ccsg.NvgNode.WebGLRenderCmd.prototype.rendering = function (ctx) {
     var node = this._node;
     cc.gl.blendFunc(node._blendFunc.src, node._blendFunc.dst);
     this._shaderProgram.use();

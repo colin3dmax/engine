@@ -39,6 +39,7 @@ module.exports = [
     require('./CCLabel'),
     require('./CCProgressBar'),
     require('./CCMask'),
+    require('./CCNvgNode'),
     require('./CCScrollBar'),
     require('./CCScrollView'),
     require('./CCLayout'),

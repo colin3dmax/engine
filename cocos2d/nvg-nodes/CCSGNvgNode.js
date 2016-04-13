@@ -3,16 +3,70 @@
  http://www.cross2d.com
  ****************************************************************************/
 
+
+
+cc.v2fzero = function () {
+    return {x: 0, y: 0};
+};
+
+cc.v2f = function (x, y) {
+    return {x: x, y: y};
+};
+
+cc.v2fadd = function (v0, v1) {
+    return cc.v2f(v0.x + v1.x, v0.y + v1.y);
+};
+
+cc.v2fsub = function (v0, v1) {
+    return cc.v2f(v0.x - v1.x, v0.y - v1.y);
+};
+
+cc.v2fmult = function (v, s) {
+    return cc.v2f(v.x * s, v.y * s);
+};
+
+cc.v2fperp = function (p0) {
+    return cc.v2f(-p0.y, p0.x);
+};
+
+cc.v2fneg = function (p0) {
+    return cc.v2f(-p0.x, -p0.y);
+};
+
+cc.v2fdot = function (p0, p1) {
+    return  p0.x * p1.x + p0.y * p1.y;
+};
+
+cc.v2fforangle = function (_a_) {
+    return cc.v2f(Math.cos(_a_), Math.sin(_a_));
+};
+
+cc.v2fnormalize = function (p) {
+    var r = cc.pNormalize(cc.p(p.x, p.y));
+    return cc.v2f(r.x, r.y);
+};
+
+cc.__v2f = function (v) {
+    return cc.v2f(v.x, v.y);
+};
+
+cc.__t = function (v) {
+    return {u: v.x, v: v.y};
+};
+
+
 /**
  * <p>CCNvgNode                                                <br/>
  * Node that draws dots, segments and polygons.                        <br/>
  * Faster than the "drawing primitives" since they it draws everything in one single batch.</p>
  * @class
- * @name cc.NvgNode
+ * @name _ccsg.NvgNode
  * @extends  _ccsg.Node
  */
-cc.NvgNode = _ccsg.Node.extend(/** @lends cc.NvgNode# */{
+_ccsg.NvgNode = _ccsg.Node.extend(/** @lends _ccsg.NvgNode# */{
 //TODO need refactor
+    _name:"ccsg.NvgNode",
+    _className: "NvgNode",
     _buffer:null,
     _blendFunc:null,
     _lineWidth: 1,
@@ -39,6 +93,14 @@ cc.NvgNode = _ccsg.Node.extend(/** @lends cc.NvgNode# */{
     NVG_IMAGE_FLIPY:1<<3,
     NVG_IMAGE_PREMULTIPLIED:1<<4,
 
+
+    //fontHandle it is a system font name, ttf file path or bmfont file path.
+    ctor: function() {
+        _ccsg.Node.prototype.ctor.call(this);
+        this.setAnchorPoint(cc.p(0.5, 0.5));
+        _ccsg.Node.prototype.setContentSize.call(this, cc.size(128, 128));
+        this._blendFunc = cc.BlendFunc._alphaNonPremultiplied();
+    },
 
     /**
      * Gets the blend func
@@ -417,17 +479,17 @@ cc.NvgNode = _ccsg.Node.extend(/** @lends cc.NvgNode# */{
 
 /**
  * Creates a NvgNode
- * @deprecated since v3.0 please use new cc.NvgNode() instead.
- * @return {cc.NvgNode}
+ * @deprecated since v3.0 please use new _ccsg.NvgNode() instead.
+ * @return {_ccsg.NvgNode}
  */
-cc.NvgNode.create = function () {
-    return new cc.NvgNode();
+_ccsg.NvgNode.create = function () {
+    return new _ccsg.NvgNode();
 };
 
 
-cc.NvgNode.TYPE_DOT = 0;
-cc.NvgNode.TYPE_SEGMENT = 1;
-cc.NvgNode.TYPE_POLY = 2;
+_ccsg.NvgNode.TYPE_DOT = 0;
+_ccsg.NvgNode.TYPE_SEGMENT = 1;
+_ccsg.NvgNode.TYPE_POLY = 2;
 
 cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
     if (cc._renderType === cc.game.RENDER_TYPE_CANVAS) {
@@ -445,12 +507,12 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
             _t.isStroke = isStroke || false;
         };
 
-        cc.js.mixin(cc.NvgNode.prototype, /** @lends cc.NvgNode# */{
+        cc.js.mixin(_ccsg.NvgNode.prototype, /** @lends _ccsg.NvgNode# */{
             _className:"NvgNodeCanvas",
 
             /**
-             * <p>The cc.NvgNodeCanvas's constructor. <br/>
-             * This function will automatically be invoked when you create a node using new construction: "var node = new cc.NvgNodeCanvas()".<br/>
+             * <p>The _ccsg.NvgNodeCanvas's constructor. <br/>
+             * This function will automatically be invoked when you create a node using new construction: "var node = new _ccsg.NvgNodeCanvas()".<br/>
              * Override it to extend its behavior, remember to call "this._super()" in the extended "ctor" function.</p>
              */
             ctor: function () {
@@ -483,7 +545,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
                     destination,
                     cc.p(origin.x, destination.y)
                 ];
-                var element = new cc._NvgNodeElement(cc.NvgNode.TYPE_POLY);
+                var element = new cc._NvgNodeElement(_ccsg.NvgNode.TYPE_POLY);
                 element.verts = vertices;
                 element.lineWidth = lineWidth;
                 element.lineColor = lineColor;
@@ -528,7 +590,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
                     vertices.push(cc.p(center.x, center.y));
                 }
 
-                var element = new cc._NvgNodeElement(cc.NvgNode.TYPE_POLY);
+                var element = new cc._NvgNodeElement(_ccsg.NvgNode.TYPE_POLY);
                 element.verts = vertices;
                 element.lineWidth = lineWidth;
                 element.lineColor = color;
@@ -562,7 +624,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
                 }
                 vertices.push(cc.p(destination.x, destination.y));
 
-                var element = new cc._NvgNodeElement(cc.NvgNode.TYPE_POLY);
+                var element = new cc._NvgNodeElement(_ccsg.NvgNode.TYPE_POLY);
                 element.verts = vertices;
                 element.lineWidth = lineWidth;
                 element.lineColor = color;
@@ -597,7 +659,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
                 }
                 vertices.push(cc.p(destination.x, destination.y));
 
-                var element = new cc._NvgNodeElement(cc.NvgNode.TYPE_POLY);
+                var element = new cc._NvgNodeElement(_ccsg.NvgNode.TYPE_POLY);
                 element.verts = vertices;
                 element.lineWidth = lineWidth;
                 element.lineColor = color;
@@ -655,7 +717,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
                     vertices.push(newPos);
                 }
 
-                var element = new cc._NvgNodeElement(cc.NvgNode.TYPE_POLY);
+                var element = new cc._NvgNodeElement(_ccsg.NvgNode.TYPE_POLY);
                 element.verts = vertices;
                 element.lineWidth = lineWidth;
                 element.lineColor = color;
@@ -674,7 +736,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
                 color = color || this.getDrawColor();
                 if (color.a == null)
                     color.a = 255;
-                var element = new cc._NvgNodeElement(cc.NvgNode.TYPE_DOT);
+                var element = new cc._NvgNodeElement(_ccsg.NvgNode.TYPE_DOT);
                 element.verts = [pos];
                 element.lineWidth = radius;
                 element.fillColor = color;
@@ -710,7 +772,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
                 color = color || this.getDrawColor();
                 if (color.a == null)
                     color.a = 255;
-                var element = new cc._NvgNodeElement(cc.NvgNode.TYPE_POLY);
+                var element = new cc._NvgNodeElement(_ccsg.NvgNode.TYPE_POLY);
                 element.verts = [from, to];
                 element.lineWidth = lineWidth * 2;
                 element.lineColor = color;
@@ -731,7 +793,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
                 color = color || this.getDrawColor();
                 if (color.a == null)
                     color.a = 255;
-                var element = new cc._NvgNodeElement(cc.NvgNode.TYPE_POLY);
+                var element = new cc._NvgNodeElement(_ccsg.NvgNode.TYPE_POLY);
                 
                 element.verts = verts;
                 element.fillColor = fillColor;
@@ -768,13 +830,13 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
             },
 
             _createRenderCmd: function(){
-                return new cc.NvgNode.CanvasRenderCmd(this);
+                return new _ccsg.NvgNode.CanvasRenderCmd(this);
             }
         });
     }
     else if (cc._renderType === cc.game.RENDER_TYPE_WEBGL) {
         
-        cc.js.mixin(cc.NvgNode.prototype, {
+        cc.js.mixin(_ccsg.NvgNode.prototype, {
             _bufferCapacity:0,
 
             _trianglesArrayBuffer:null,
@@ -1158,7 +1220,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
             },
 
             _createRenderCmd: function () {
-                return new cc.NvgNode.WebGLRenderCmd(this);
+                return new _ccsg.NvgNode.WebGLRenderCmd(this);
             }
         });
     }

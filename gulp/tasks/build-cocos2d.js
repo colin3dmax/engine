@@ -78,9 +78,9 @@ var srcs = [
     './cocos2d/shape-nodes/CCDrawNodeCanvasRenderCmd.js',
     './cocos2d/shape-nodes/CCDrawNodeWebGLRenderCmd.js',
 
-    './cocos2d/nvg-nodes/CCNvgNode.js',
-    './cocos2d/nvg-nodes/CCNvgNodeCanvasRenderCmd.js',
-    './cocos2d/nvg-nodes/CCNvgNodeWebGLRenderCmd.js',
+    './cocos2d/nvg-nodes/CCSGNvgNode.js',
+    './cocos2d/nvg-nodes/CCSGNvgNodeCanvasRenderCmd.js',
+    './cocos2d/nvg-nodes/CCSGNvgNodeWebGLRenderCmd.js',
 
     './cocos2d/clipping-nodes/CCClippingNode.js',
     './cocos2d/clipping-nodes/CCClippingNodeCanvasRenderCmd.js',
