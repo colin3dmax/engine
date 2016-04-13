@@ -9,9 +9,9 @@
  * Faster than the "drawing primitives" since they it draws everything in one single batch.</p>
  * @class
  * @name cc.NvgNode
- * @extends cc.Node
+ * @extends  _ccsg.Node
  */
-cc.NvgNode = cc.Node.extend(/** @lends cc.NvgNode# */{
+cc.NvgNode = _ccsg.Node.extend(/** @lends cc.NvgNode# */{
 //TODO need refactor
     _buffer:null,
     _blendFunc:null,
@@ -266,6 +266,13 @@ cc.NvgNode = cc.Node.extend(/** @lends cc.NvgNode# */{
 
         var ctx = this.wrapper.getContext();
         ctx.transform(windowWidth/winSize.width,0,0,windowHeight/winSize.height,0,0);
+
+
+        // ctx.transform(1,0,0,1,0,0);
+        // ctx.fillStyle='#FF0000';
+        // ctx.fillRect(0,0,80,100);
+        
+
     },
     endFrame:function(){
         // console.log("endFrame")
@@ -422,7 +429,7 @@ cc.NvgNode.TYPE_DOT = 0;
 cc.NvgNode.TYPE_SEGMENT = 1;
 cc.NvgNode.TYPE_POLY = 2;
 
-cc.game.addEventListener(cc.game.EVENT_RENDERER_INITED, function () {
+cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
     if (cc._renderType === cc.game.RENDER_TYPE_CANVAS) {
 
         cc._NvgNodeElement = function (type, verts, fillColor, lineWidth, lineColor, lineCap, isClosePolygon, isFill, isStroke) {
@@ -438,7 +445,7 @@ cc.game.addEventListener(cc.game.EVENT_RENDERER_INITED, function () {
             _t.isStroke = isStroke || false;
         };
 
-        cc.extend(cc.NvgNode.prototype, /** @lends cc.NvgNode# */{
+        cc.js.mixin(cc.NvgNode.prototype, /** @lends cc.NvgNode# */{
             _className:"NvgNodeCanvas",
 
             /**
@@ -447,7 +454,7 @@ cc.game.addEventListener(cc.game.EVENT_RENDERER_INITED, function () {
              * Override it to extend its behavior, remember to call "this._super()" in the extended "ctor" function.</p>
              */
             ctor: function () {
-                cc.Node.prototype.ctor.call(this);
+                 _ccsg.Node.prototype.ctor.call(this);
                 var locCmd = this._renderCmd;
                 locCmd._buffer = this._buffer = [];
                 locCmd._drawColor = this._drawColor = cc.color(255, 255, 255, 255);
@@ -767,7 +774,7 @@ cc.game.addEventListener(cc.game.EVENT_RENDERER_INITED, function () {
     }
     else if (cc._renderType === cc.game.RENDER_TYPE_WEBGL) {
         
-        cc.extend(cc.NvgNode.prototype, {
+        cc.js.mixin(cc.NvgNode.prototype, {
             _bufferCapacity:0,
 
             _trianglesArrayBuffer:null,
@@ -778,7 +785,7 @@ cc.game.addEventListener(cc.game.EVENT_RENDERER_INITED, function () {
             _className:"NvgNodeWebGL",
 
             ctor:function () {
-                cc.Node.prototype.ctor.call(this);
+                 _ccsg.Node.prototype.ctor.call(this);
                 this._buffer = [];
                 this._blendFunc = new cc.BlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA);
                 this._drawColor = cc.color(255,255,255,255);
@@ -787,7 +794,7 @@ cc.game.addEventListener(cc.game.EVENT_RENDERER_INITED, function () {
             },
 
             init:function () {
-                if (cc.Node.prototype.init.call(this)) {
+                if ( _ccsg.Node.prototype.init.call(this)) {
                     this.shaderProgram = cc.shaderCache.programForKey(cc.SHADER_POSITION_LENGTHTEXTURECOLOR);
                     this._ensureCapacity(64);
                     this._trianglesWebBuffer = cc._renderContext.createBuffer();

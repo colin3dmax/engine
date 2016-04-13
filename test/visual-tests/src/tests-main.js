@@ -233,6 +233,14 @@ var TestController = cc.LayerGradient.extend({
 });
 TestController.YOffset = 0;
 var testNames = [
+     {
+        title:"AA NanovgTest",
+        platforms: PLATFORM_ALL,
+        linksrc:"src/NvgTest/NvgTest.js",
+        testScene:function () {
+            return new NvgTestScene();
+        }
+    },
     {
         title:"ActionManager Test",
         platforms: PLATFORM_ALL,
