@@ -78,6 +78,10 @@ var srcs = [
     './cocos2d/shape-nodes/CCDrawNodeCanvasRenderCmd.js',
     './cocos2d/shape-nodes/CCDrawNodeWebGLRenderCmd.js',
 
+    './cocos2d/nvg-nodes/CCNvgNode.js',
+    './cocos2d/nvg-nodes/CCNvgNodeCanvasRenderCmd.js',
+    './cocos2d/nvg-nodes/CCNvgNodeWebGLRenderCmd.js',
+
     './cocos2d/clipping-nodes/CCClippingNode.js',
     './cocos2d/clipping-nodes/CCClippingNodeCanvasRenderCmd.js',
     './cocos2d/clipping-nodes/CCClippingNodeWebGLRenderCmd.js',
