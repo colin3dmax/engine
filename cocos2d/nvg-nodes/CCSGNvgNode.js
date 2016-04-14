@@ -54,7 +54,7 @@ cc.__t = function (v) {
     return {u: v.x, v: v.y};
 };
 
-
+var macro = cc.macro;
 /**
  * <p>CCNvgNode                                                <br/>
  * Node that draws dots, segments and polygons.                        <br/>
@@ -516,7 +516,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
              * Override it to extend its behavior, remember to call "this._super()" in the extended "ctor" function.</p>
              */
             ctor: function () {
-                 _ccsg.Node.prototype.ctor.call(this);
+                _ccsg.Node.prototype.ctor.call(this);
                 var locCmd = this._renderCmd;
                 locCmd._buffer = this._buffer = [];
                 locCmd._drawColor = this._drawColor = cc.color(255, 255, 255, 255);
@@ -849,7 +849,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
             ctor:function () {
                  _ccsg.Node.prototype.ctor.call(this);
                 this._buffer = [];
-                this._blendFunc = new cc.BlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA);
+                this._blendFunc = new cc.BlendFunc(macro.SRC_ALPHA, macro.ONE_MINUS_SRC_ALPHA);
                 this._drawColor = cc.color(255,255,255,255);
 
                 this.init();
@@ -857,7 +857,7 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
 
             init:function () {
                 if ( _ccsg.Node.prototype.init.call(this)) {
-                    this.shaderProgram = cc.shaderCache.programForKey(cc.SHADER_POSITION_LENGTHTEXTURECOLOR);
+                    this.shaderProgram = cc.shaderCache.programForKey(macro.SHADER_POSITION_LENGTHTEXTURECOLOR);
                     this._ensureCapacity(64);
                     this._trianglesWebBuffer = cc._renderContext.createBuffer();
                     this._dirty = true;
@@ -971,7 +971,8 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
             _render:function () {
                 var gl = cc._renderContext;
 
-                cc.glEnableVertexAttribs(cc.VERTEX_ATTRIB_FLAG_POS_COLOR_TEX);
+                cc.gl.enableVertexAttribs(macro.VERTEX_ATTRIB_FLAG_POS_COLOR_TEX);
+
                 gl.bindBuffer(gl.ARRAY_BUFFER, this._trianglesWebBuffer);
                 if (this._dirty) {
                     gl.bufferData(gl.ARRAY_BUFFER, this._trianglesArrayBuffer, gl.STREAM_DRAW);
@@ -980,15 +981,19 @@ cc.game.once(cc.game.EVENT_RENDERER_INITED, function () {
                 var triangleSize = cc.V2F_C4B_T2F.BYTES_PER_ELEMENT;
 
                 // vertex
-                gl.vertexAttribPointer(cc.VERTEX_ATTRIB_POSITION, 2, gl.FLOAT, false, triangleSize, 0);
+                gl.vertexAttribPointer(macro.VERTEX_ATTRIB_POSITION, 2, gl.FLOAT, false, triangleSize, 0);
                 // color
-                gl.vertexAttribPointer(cc.VERTEX_ATTRIB_COLOR, 4, gl.UNSIGNED_BYTE, true, triangleSize, 8);
+                gl.vertexAttribPointer(macro.VERTEX_ATTRIB_COLOR, 4, gl.UNSIGNED_BYTE, true, triangleSize, 8);
                 // texcood
-                gl.vertexAttribPointer(cc.VERTEX_ATTRIB_TEX_COORDS, 2, gl.FLOAT, false, triangleSize, 12);
+                gl.vertexAttribPointer(macro.VERTEX_ATTRIB_TEX_COORDS, 2, gl.FLOAT, false, triangleSize, 12);
 
-                gl.drawArrays(gl.TRIANGLES, 0, this._buffer.length * 3);
-                cc.incrementGLDraws(1);
-                //cc.checkGLErrorDebug();
+                if(this._buffer.length>0){
+                    gl.drawArrays(gl.TRIANGLES, 0, this._buffer.length*3);
+                    cc.incrementGLDraws(1);
+                    cc.checkGLErrorDebug();
+                }
+
+                
             },
 
             _ensureCapacity:function(count){

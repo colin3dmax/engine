@@ -44,7 +44,6 @@ function random(a,b){
     return Math.random()*(b-a)+a;
 }
 
-
 function random2Int(a,b){
     return Number.parseInt( random(a,b) );
 }
@@ -94,9 +93,13 @@ var NvgLayer = cc.Layer.extend({
         
         initialize(winSize);
 
-        var node = cc.NvgNode.create();
+        var node = _ccsg.NvgNode.create();
 
-        node.draw = function(transform, transformUpdated){
+        node.drawDot(cc.p(30,30),200, cc.color(255,0,0,255) );
+
+        node.drawRect(cc.p(120, 120), cc.p(200, 200), null, 2, cc.color(255, 0, 255, 255));
+
+        node.drawFunc = function(transform, transformUpdated){
             var RADIUS = 22;
             //kmGLPushMatrix()
             //kmGLLoadMatrix(transform)

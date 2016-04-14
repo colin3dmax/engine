@@ -91,7 +91,7 @@ cc.game.run({
     "showFPS"       : true,
     "frameRate"     : 60,
     "id"            : "gameCanvas",
-    "renderMode"    : 1,
+    "renderMode"    : 0,
 
     "jsList"        : [
         '../../cocos2d/core/base-nodes/CCAtlasNode.js',
